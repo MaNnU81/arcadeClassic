@@ -6,13 +6,13 @@ public class Ammo : MonoBehaviour
     public float lifespan = 0.5f;
     public float damage = 1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected void Start()
     {
 
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         transform.Translate(Vector2.up * speed * Time.deltaTime);
 
@@ -23,7 +23,7 @@ public class Ammo : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+   protected private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "enemy" || collision.gameObject.tag == "hazard")
         {
@@ -31,6 +31,13 @@ public class Ammo : MonoBehaviour
             enemy.getDamage(damage);
             lifespan = 0;
         }
-        Debug.Log("collision");
+
+        if (collision.gameObject.tag == "BossTurret")
+        {
+            BoosTurret bt = collision.gameObject.GetComponent<BoosTurret>();
+            bt.Damage(damage);
+           Destroy(gameObject);
+        }
+       
     }
 }
